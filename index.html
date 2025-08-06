@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAJ'S Stopwatch</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>RAJ STOP WATCH</h1>
+            <div class="mode-switcher">
+                <button class="mode-btn active" data-mode="stopwatch">Stopwatch</button>
+                <button class="mode-btn" data-mode="countdown">Countdown</button>
+                <button class="mode-btn" data-mode="interval">Interval</button>
+            </div>
+        </header>
+
+        <main class="timer-container">
+            <!-- Stopwatch View -->
+            <div class="timer-view active" id="stopwatch-view">
+                <div class="display">
+                    <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+                    <span class="milliseconds">.<span id="milliseconds">00</span></span>
+                </div>
+                <div class="controls">
+                    <button id="startBtn" class="btn control-btn">Start
+                    </button>
+                    <button id="pauseBtn" class="btn control-btn">Pause
+                    </button>
+                    <button id="lapBtn" class="btn control-btn">Lap
+                    </button>
+                    <button id="resetBtn" class="btn control-btn">Reset
+                    </button>
+                </div>
+                <div class="laps-container">
+                    <div class="laps-header">
+                        <h3>Laps</h3>
+                        <span id="lapCount">0</span>
+                    </div>
+                    <div class="laps-scroll" id="lapsList"></div>
+                </div>
+            </div>
+
+            <!-- Countdown View -->
+            <div class="timer-view" id="countdown-view">
+                <div class="time-input">
+                    <input type="number" id="cd-hours" min="0" max="23" value="0">
+                    <span>:</span>
+                    <input type="number" id="cd-minutes" min="0" max="59" value="5">
+                    <span>:</span>
+                    <input type="number" id="cd-seconds" min="0" max="59" value="0">
+                </div>
+                <div class="controls">
+                    <button id="cd-startBtn" class="btn control-btn">Start</button>
+                    <button id="cd-resetBtn" class="btn control-btn">Reset</button>
+                </div>
+                <div class="presets">
+                    <button class="preset-btn" data-minutes="1">1 min</button>
+                    <button class="preset-btn" data-minutes="5">5 min</button>
+                    <button class="preset-btn" data-minutes="10">10 min</button>
+                </div>
+            </div>
+
+            <!-- Interval View -->
+            <div class="timer-view" id="interval-view">
+                <div class="interval-settings">
+                    <div class="setting">
+                        <label>Work Time</label>
+                        <input type="number" id="work-minutes" min="1" max="60" value="5">
+                    </div>
+                    <div class="setting">
+                        <label>Rest Time</label>
+                        <input type="number" id="rest-minutes" min="1" max="60" value="1">
+                    </div>
+                    <div class="setting">
+                        <label>Rounds</label>
+                        <input type="number" id="rounds" min="1" max="20" value="5">
+                    </div>
+                </div>
+                <div class="interval-display">
+                    <div class="round-display">Round: <span id="current-round">1</span>/<span id="total-rounds">5</span></div>
+                    <div class="time-display" id="interval-time">05:00</div>
+                    <div class="phase-display" id="phase-display">WORK</div>
+                </div>
+                <div class="controls">
+                    <button id="int-startBtn" class="btn control-btn">Start</button>
+                    <button id="int-stopBtn" class="btn control-btn">Stop</button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <button id="settingsBtn" class="footer-btn">
+                <svg class="icon"><use href="assets/icons/settings.svg#icon"></use></svg>
+            </button>
+            <button id="analyticsBtn" class="footer-btn">
+                <svg class="icon"><use href="assets/icons/chart.svg#icon"></use></svg>
+            </button>
+            <button id="exportBtn" class="footer-btn">
+                <svg class="icon"><use href="assets/icons/export.svg#icon"></use></svg>
+            </button>
+            <button id="themeBtn" class="footer-btn">Theme</button>
+        </footer>
+
+        <!-- Modals -->
+        <div class="modal" id="settings-modal">
+            <div class="modal-content">
+                <h2>Settings</h2>
+                <div class="setting-group">
+                    <label>Sounds</label>
+                    <select id="sound-select">
+                        <option value="beep">Beep</option>
+                        <option value="digital">Digital</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label>Display Precision</label>
+                    <select id="precision-select">
+                        <option value="seconds">Seconds</option>
+                        <option value="milliseconds" selected>Milliseconds</option>
+                    </select>
+                </div>
+                <button class="modal-close">Close</button>
+            </div>
+        </div>
+
+        <div class="modal" id="analytics-modal">
+            <div class="modal-content">
+                <h2>Session Analytics</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="avg-lap">00:00</div>
+                        <div class="stat-label">Avg Lap Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="fastest-lap">00:00</div>
+                        <div class="stat-label">Fastest Lap</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="total-time">00:00</div>
+                        <div class="stat-label">Total Time</div>
+                    </div>
+                </div>
+                <canvas id="laps-chart"></canvas>
+                <button class="modal-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="startSound" src="assets/sounds/start.mp3"></audio>
+    <audio id="stopSound" src="assets/sounds/stop.mp3"></audio>
+    <audio id="lapSound" src="assets/sounds/lap.mp3"></audio>
+    <audio id="beepSound" src="assets/sounds/beep.mp3"></audio>
+
+    <!-- JavaScript Files -->
+    <script src="js/stopwatch.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/interval.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
